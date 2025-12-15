@@ -13,11 +13,11 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      {{- include "myChart.selectorLabels" . | nindent 6 }}
+      {{- include "mychart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "myChart.selectorLabels" . | nindent 8 }}
+        {{- include "mychart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: petclinic-container
