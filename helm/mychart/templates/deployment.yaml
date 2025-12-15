@@ -19,6 +19,10 @@ spec:
     metadata:
       labels:
         {{- include "mychart.selectorLabels" . | nindent 8 }}
+        # read labels from values
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       containers:
       - name: petclinic-container
