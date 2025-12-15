@@ -2,16 +2,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "mychart.fullname" . }}
+  name: {{ include "petclinic.fullname" . }}
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    {{- include "petclinic.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.ingress.className }}
-  ingressClassName: {{ . }}
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
   {{- if .Values.ingress.tls }}
   tls:
@@ -25,17 +25,15 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - {{ if .host }}host: {{ .host | quote }}{{ end }} # <--- Now it only adds 'host' if one exists
       http:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
+            pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "mychart.fullname" $ }}
+                name: {{ include "petclinic.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
