@@ -3,8 +3,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: petclinic-deployment
-  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   strategy:
@@ -39,4 +39,4 @@ spec:
             cpu: '0.5'
             memory: '500Mi'
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.containerPort }}
